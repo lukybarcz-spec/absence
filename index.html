@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Moje absence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3EEF8; --card:#FFFFFF; --ink:#2B1B3A; --soft:#6E5E80; --line:#DDD2EA;
+  --ok:#17876A; --okbg:#DDF3EC; --bad:#D23E5C; --badbg:#FBE1E6; --warn:#B86E00; --warnbg:#FDEFD6;
+  --accent:#6B3FD4; --chip:#EAE2F5;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B1424; --card:#261D33; --ink:#F1EAF9; --soft:#B4A6C6; --line:#3B2F4C;
+    --ok:#4FD1A8; --okbg:#173B32; --bad:#FF7A93; --badbg:#47202B; --warn:#F5B451; --warnbg:#3D2C12;
+    --accent:#B49CFF; --chip:#33284A; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B1424; --card:#261D33; --ink:#F1EAF9; --soft:#B4A6C6; --line:#3B2F4C;
+  --ok:#4FD1A8; --okbg:#173B32; --bad:#FF7A93; --badbg:#47202B; --warn:#F5B451; --warnbg:#3D2C12;
+  --accent:#B49CFF; --chip:#33284A; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.45}
+main{max-width:560px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.15rem;font-weight:600;margin:4px 0 16px;color:var(--soft)}
+h2{font-size:1.25rem;font-weight:800;margin:0 0 8px;letter-spacing:-.01em}
+section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:0 0 14px}
+label{display:block;font-size:.9rem;color:var(--soft);margin:0 0 4px}
+select,input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%;min-height:46px}
+input[type=number]{font-size:1.4rem;font-weight:800;text-align:center}
+button{font:inherit;cursor:pointer;border-radius:12px;border:1px solid var(--line);background:var(--chip);color:var(--ink);padding:10px 14px;min-height:46px;font-weight:600}
+button.primary{background:var(--accent);color:var(--card);border-color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.row{display:flex;gap:10px;align-items:flex-end}
+.row>*{flex:1}
+.stepper{display:flex;gap:6px;align-items:stretch}
+.stepper button{flex:0 0 52px;padding:0}
+.stepper input{flex:1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hero{padding:22px 18px}
+.big{font-size:clamp(4rem,22vw,6.5rem);font-weight:800;line-height:.9;letter-spacing:-.04em}
+.big small{font-size:.38em;letter-spacing:0;font-weight:600}
+.sub{color:var(--soft);margin:6px 0 14px}
+.bar{position:relative;height:16px;border-radius:99px;background:var(--chip);overflow:visible;margin:18px 0 26px}
+.fill{height:100%;border-radius:99px;transition:width .5s ease}
+.mark{position:absolute;top:-6px;bottom:-6px;width:3px;background:var(--ink);border-radius:2px}
+.mark span{position:absolute;top:30px;left:50%;transform:translateX(-50%);font-size:.8rem;white-space:nowrap;color:var(--soft)}
+.status{border-radius:12px;padding:10px 12px;font-weight:600}
+.s-ok{background:var(--okbg);color:var(--ok)}
+.s-bad{background:var(--badbg);color:var(--bad)}
+.s-warn{background:var(--warnbg);color:var(--warn)}
+.fact{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.fact:first-of-type{border-top:0}
+.fact b{font-size:1.15rem;text-align:right}
+.date{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:4px 0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:6px}
+.col{border:1px solid var(--line);border-radius:14px;padding:12px}
+.col h3{margin:0 0 6px;font-size:1rem}
+.muted{color:var(--soft);font-size:.92rem}
+.plans{list-style:none;padding:0;margin:12px 0 0}
+.plans li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.plans li button{min-height:36px;padding:4px 10px}
+details summary{cursor:pointer;font-weight:800;font-size:1.1rem;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:" +";color:var(--soft)}
+details[open] summary::after{content:" ×"}
+.weeks{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.wk{min-height:38px;padding:4px 8px;font-size:.85rem;font-weight:600;border-radius:10px}
+.wk.P{background:var(--accent);color:var(--card);border-color:var(--accent)}
+.wk.H{opacity:.45}
+.wk.cur{box-shadow:0 0 0 2px var(--ink)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.tiny{font-size:.82rem;color:var(--soft);margin-top:10px}
+@media (max-width:380px){.grid2{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Moje absence, 3.D</h1>
+
+  <section>
+    <div class="grid2">
+      <div>
+        <label for="subj">Předmět</label>
+        <select id="subj"></select>
+      </div>
+      <div>
+        <label for="stav">Stav ke dni</label>
+        <input type="date" id="stav">
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <label for="missed" id="missedLbl">Zameškáno v tomto pololetí (hodin)</label>
+      <div class="stepper">
+        <button type="button" data-step="-1" aria-label="Ubrat hodinu">−1</button>
+        <input type="number" id="missed" min="0" step="1" inputmode="numeric">
+        <button type="button" data-step="1" aria-label="Přidat hodinu">+1</button>
+        <button type="button" data-step="7" id="plus7" aria-label="Přidat den praxe">+7</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero" id="hero"></section>
+  <section id="need"></section>
+  <section id="budget"></section>
+
+  <section>
+    <h2>Co když nepůjdu</h2>
+    <p class="muted" style="margin:0 0 10px">Zadej den, kdy nepůjdeš, nebo rozmezí. Spočítám jen dny, kdy daný předmět opravdu máš.</p>
+    <div class="grid2">
+      <div><label for="pFrom">Od</label><input type="date" id="pFrom"></div>
+      <div><label for="pTo">Do (nepovinné)</label><input type="date" id="pTo"></div>
+    </div>
+    <div style="margin-top:10px"><button type="button" class="primary" id="addPlan" style="width:100%">Přidat do výpočtu</button></div>
+    <ul class="plans" id="plans"></ul>
+    <div id="planRes"></div>
+  </section>
+
+  <section>
+    <details id="settings">
+      <summary>Nastavení kalendáře</summary>
+      <div class="grid2" style="margin-top:12px">
+        <div><label for="limit">Limit absence (%)</label><input type="number" id="limit" min="1" max="100" step="1" style="font-size:1.1rem"></div>
+        <div><label for="q1end">Konec 1. čtvrtletí</label><input type="date" id="q1end"></div>
+        <div><label for="q3end">Konec 3. čtvrtletí</label><input type="date" id="q3end"></div>
+        <div><label for="freeDay">Volný den navíc</label><input type="date" id="freeDay"></div>
+      </div>
+      <div style="margin-top:8px"><button type="button" id="addFree">Přidat volný den</button></div>
+      <ul class="plans" id="freeList"></ul>
+      <h2 style="margin-top:16px;font-size:1.05rem">Týdny praxe a školy</h2>
+      <p class="muted" style="margin:0">Klepnutím přepneš týden. Fialový je praxe, světlý škola, průhledný prázdniny. Zkontroluj hlavně leden a týdny po prázdninách.</p>
+      <div class="weeks" id="weeks"></div>
+      <div style="margin-top:10px"><button type="button" id="resetWeeks">Vrátit střídání týdnů</button></div>
+      <p class="tiny">Výchozí stav hodin a absencí je převzatý ze školní aplikace k 2. 11. 2026. Další hodiny počítám podle rozvrhu.</p>
+      <p class="tiny">Svátky a prázdniny 2026/27 podle MŠMT pro Prahu 8: 28. 9., 28. až 30. 10., 17. 11., 23. 12. až 3. 1., 29. 1., jarní 1. až 5. 3., 25., 26. a 29. 3. Konce čtvrtletí jsou odhad, uprav je podle školy.</p>
+    </details>
+  </section>
+</main>
+
+<script>
+(function(){
+const DAY=864e5;
+const D=s=>{const [y,m,d]=s.split('-').map(Number);return Date.UTC(y,m-1,d)};
+const iso=t=>new Date(t).toISOString().slice(0,10);
+const WD=['ne','po','út','st','čt','pá','so'];
+const fmt=t=>{const x=new Date(t);return WD[x.getUTCDay()]+' '+x.getUTCDate()+'. '+(x.getUTCMonth()+1)+'.'+(x.getUTCFullYear()===2027?' 2027':'')};
+const fmtS=t=>{const x=new Date(t);return x.getUTCDate()+'. '+(x.getUTCMonth()+1)+'.'};
+const pc=x=>(Math.round(x*1000)/10).toLocaleString('cs-CZ',{minimumFractionDigits:1,maximumFractionDigits:1});
+const n1=x=>(Math.round(x*10)/10).toLocaleString('cs-CZ');
+
+const YEAR_START=D('2026-09-01'),YEAR_END=D('2027-06-30'),BASE=D('2026-08-31');
+const SEM={h1:{s:D('2026-09-01'),e:D('2027-01-28'),name:'1. pololetí'},h2:{s:D('2027-02-01'),e:D('2027-06-30'),name:'2. pololetí'}};
+const HOL=new Set(['2026-09-28','2026-10-28','2026-10-29','2026-10-30','2026-11-17',
+ '2026-12-23','2026-12-24','2026-12-25','2026-12-28','2026-12-29','2026-12-30','2026-12-31','2027-01-01',
+ '2027-01-29','2027-03-01','2027-03-02','2027-03-03','2027-03-04','2027-03-05','2027-03-25','2027-03-26','2027-03-29']);
+
+const SUBJ=[['OV','Odborný výcvik (praxe)'],['ČJ','Český jazyk a literatura'],['Aj','Anglický jazyk'],['EK','Ekonomika'],['Tch','Technologie'],['Mat','Materiály'],['M','Matematika'],['Ps','Psychologie a společenská výchova'],['Ch','Chemie'],['On','Občanská nauka'],['Tv','Tělesná výchova'],['Vv','Výtvarná výchova'],['InT','Informační technologie']];
+const BL_DATE='2026-11-02';
+const BL={OV:{c:130,z:42},'ČJ':{c:16,z:0},Aj:{c:14,z:0},EK:{c:15,z:1},Tch:{c:12,z:0},Mat:{c:12,z:1},M:{c:9,z:0},Ps:{c:8,z:0},Ch:{c:9,z:1},On:{c:7,z:0},Tv:{c:10,z:2},Vv:{c:8,z:0},InT:{c:8,z:2}};
+const TT={1:{Tv:2,Ps:1,Mat:1,Ch:1,EK:1,'ČJ':1},2:{Tch:2,'ČJ':1,M:1,On:1,Aj:1,Ps:1},3:{'ČJ':1,M:1,Aj:1,On:1,EK:1,Vv:2},4:{Tch:2,'ČJ':1,Mat:1,EK:1,Aj:2},5:{EK:1,InT:2,Mat:1,Ch:1}};
+
+const KEY='absence-3d-v1';
+const todayIso=(()=>{const n=new Date();return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')})();
+let st={subj:'OV',stav:'',missed:{h1:{OV:42},h2:{}},limit:30,q1end:'2026-11-13',q3end:'2027-04-16',weeks:{},free:[],plans:[]};
+try{const s=localStorage.getItem(KEY);if(s)st=Object.assign(st,JSON.parse(s))}catch(e){}
+if(!st.lim30){st.limit=30;st.lim30=true}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+
+const monday=t=>t-((new Date(t).getUTCDay()+6)%7)*DAY;
+const weekType=t=>{const m=monday(t),k=iso(m);if(st.weeks[k])return st.weeks[k];const i=Math.round((m-BASE)/(7*DAY));return i%2===0?'P':'S'};
+const isOff=t=>HOL.has(iso(t))||st.free.includes(iso(t));
+function hours(t,subj){
+  if(t<YEAR_START||t>YEAR_END)return 0;
+  const w=new Date(t).getUTCDay();if(w===0||w===6)return 0;
+  if(isOff(t))return 0;
+  const wt=weekType(t);
+  if(subj==='OV')return wt==='P'?7:0;
+  if(wt!=='S')return 0;
+  return (TT[w]&&TT[w][subj])||0;
+}
+function fund(a,b,subj){let s=0;for(let t=a;t<=b;t+=DAY)s+=hours(t,subj);return s}
+function fundSem(sem,end,subj){const bd=D(BL_DATE);if(sem===SEM.h1&&end>=bd&&BL[subj])return BL[subj].c+fund(bd+DAY,end,subj);return fund(sem.s,end,subj)}
+function missedOf(sk,s){const m=(st.missed[sk]||{})[s];if(m!==undefined&&m!==null&&m!=='')return Number(m);return sk==='h1'&&BL[s]?BL[s].z:0}
+function planSet(){const set=new Set();st.plans.forEach(p=>{const a=D(p.from),b=D(p.to||p.from);for(let t=a;t<=b;t+=DAY)set.add(t)});return set}
+
+const $=id=>document.getElementById(id);
+const subjSel=$('subj');
+subjSel.innerHTML=SUBJ.map(([k,l])=>`<option value="${k}">${l}</option>`).join('');
+
+function semOf(t){return t<=SEM.h1.e?'h1':'h2'}
+
+function render(){
+  const subj=st.subj, isOV=subj==='OV';
+  const stav=D(st.stav||todayIso);
+  const sk=semOf(stav), sem=SEM[sk];
+  const A=missedOf(sk,subj);
+  const L=st.limit/100, eps=1e-9;
+  const T=stav>=sem.s?fundSem(sem,Math.min(stav,sem.e),subj):0;
+  const pct=T?A/T:0;
+  const per=isOV?7:null;
+  const dd=h=>isOV&&h>0?`<span class="muted" style="display:block;font-size:.95rem;font-weight:600">${daysTxt(h)} praxe</span>`:'';
+  $('missedLbl').textContent=`Zameškáno v ${sem.name.replace('pololetí','pololetí')} (hodin)`;
+  $('plus7').style.display=isOV?'':'none';
+
+  // hero
+  const over=pct>L+eps;
+  const semT=fundSem(sem,sem.e,subj);let pHs=0;planSet().forEach(t=>{if(t>stav&&t<=sem.e)pHs+=hours(t,subj)});
+  const semBud=Math.floor(L*semT-A-pHs+eps);
+  const budTxt=semBud>0?`<div class="date" style="color:var(--ok)">${semBud} h${dd(semBud)}</div>`:`<div class="date" style="color:var(--bad)">už nic</div>`;
+  const scale=Math.max(L*2,pct*1.15,0.01);
+  const col=over?'var(--bad)':(pct>L*0.85?'var(--warn)':'var(--ok)');
+  $('hero').innerHTML=`
+    <div class="big" style="color:${col}">${T?pc(pct):'0,0'}<small> %</small></div>
+    <div class="sub">${A} h z ${T} h ${isOV?'praxe':'předmětu '+subj} v ${sem.name}, stav k ${fmt(stav)}</div>
+    <div class="bar"><div class="fill" style="width:${Math.min(100,pct/scale*100)}%;background:${col}"></div>
+      <div class="mark" style="left:${L/scale*100}%"><span>limit ${st.limit} %</span></div></div>
+    <div class="status ${over?'s-bad':(pct>L*0.85?'s-warn':'s-ok')}">${!T?'V tomto období zatím žádná výuka nebyla.':over?`Jsi ${pc(pct-L)} bodu nad limitem.`:`Jsi v limitu, rezerva ${pc(L-pct)} bodu.`}</div>
+    <p class="muted" style="margin:16px 0 0">Do konce ${sem.name} (${fmtS(sem.e)}) můžeš ještě zameškat${pHs?' (po započtení plánu)':''}</p>${budTxt}`;
+
+  // need (base, no plans)
+  let html='<h2>Jak se dostat na limit</h2>';
+  if(!over){html+=`<p style="margin:0">Teď jsi na ${st.limit} % nebo pod tím, nic dohánět nemusíš.</p>`}
+  else{
+    const target=A/L;
+    const needH=Math.max(0,Math.ceil(target-T-eps));
+    let F=T,date=null;
+    for(let t=stav+DAY;t<=sem.e;t+=DAY){const h=hours(t,subj);if(!h)continue;F+=h;if(F+eps>=target){date=t;break}}
+    html+=`<div class="fact"><span>Musíš odchodit</span><b>${needH} h${dd(needH)}</b></div>`;
+    if(date){html+=`<p class="muted" style="margin:10px 0 0">Bez jediné absence chodit až do</p><div class="date">${fmt(date)} včetně</div><p class="muted" style="margin:0">Pak budeš na ${pc(A/F)} %.</p>`}
+    else html+=`<div class="status s-bad" style="margin-top:10px">Do konce ${sem.name} (${fmtS(sem.e)}) už se pod limit nedostaneš, ani když nevynecháš nic.</div>`;
+  }
+  $('need').innerHTML=html;
+
+  // budget per horizon
+  const plans=planSet();
+  const horizons=[];
+  const qEnd=D(sk==='h1'?st.q1end:st.q3end);
+  if(stav<qEnd&&qEnd<=sem.e)horizons.push({n:(sk==='h1'?'Do konce 1. čtvrtletí':'Do konce 3. čtvrtletí'),e:qEnd});
+  horizons.push({n:'Do konce '+sem.name,e:sem.e});
+  let b='<h2>Kolik ještě můžu chybět</h2><p class="muted" style="margin:0 0 6px">Když jinak budeš chodit, aby na konci období byla absence nejvýš '+st.limit+' %.</p><div class="cols">';
+  horizons.forEach(h=>{
+    const Tt=fundSem(sem,h.e,subj);
+    let pH=0;plans.forEach(t=>{if(t>stav&&t<=h.e)pH+=hours(t,subj)});
+    const bud=Math.floor(L*Tt-A-pH+eps);
+    const endP=Tt?(A+pH)/Tt:0;
+    b+=`<div class="col"><h3>${h.n} (${fmtS(h.e)})</h3>
+      <div class="date" style="color:${bud<0?'var(--bad)':'var(--ok)'}">${bud<0?'nic':bud+' h'}</div>
+      <div class="muted">${bud>0&&isOV?daysTxt(bud)+' praxe':''}${bud<0?'už teď máš o '+(-bud)+' h víc, než limit dovolí':''}</div>
+      <div class="muted" style="margin-top:6px">Limit ${st.limit} % z ${Tt} h je ${Math.floor(L*Tt+eps)} h, zameškáno máš ${A}${pH?' + '+pH+' v plánu':''} h.${bud>0?` Když rezervu vyčerpáš celou, skončíš na ${pc((A+pH+bud)/Tt)} %.`:''}</div></div>`;
+  });
+  b+='</div>';
+  $('budget').innerHTML=b;
+
+  // plans
+  const pl=$('plans');
+  pl.innerHTML=st.plans.map((p,i)=>{
+    const a=D(p.from),z=D(p.to||p.from);let h=0,past=false;
+    for(let t=a;t<=z;t+=DAY){if(t<=stav){if(hours(t,subj))past=true;continue}h+=hours(t,subj)}
+    return `<li><span>${fmt(a)}${p.to&&p.to!==p.from?' až '+fmt(z):''}<br><span class="muted">${h} h${dd(h)}${past?', minulé dny nepočítám':''}</span></span><button type="button" data-del="${i}" aria-label="Odebrat">Odebrat</button></li>`;
+  }).join('');
+  let pr='';
+  if(st.plans.length){
+    let F=T,Ae=A,last=over?stav:null,peak=pct,peakD=stav;
+    const days=[];
+    for(let t=stav+DAY;t<=sem.e;t+=DAY){const h=hours(t,subj);if(!h)continue;F+=h;if(plans.has(t))Ae+=h;const p=Ae/F;days.push([t,p]);if(p>L+eps)last=t;if(p>peak){peak=p;peakD=t}}
+    const totP=Ae-A;
+    let back=null;
+    if(last!==null){for(const [t,p] of days){if(t>last){back=t;break}}}
+    pr+=`<div class="fact" style="border-top:1px solid var(--line);margin-top:8px"><span>Plán přidá</span><b>${totP} h${dd(totP)}</b></div>`;
+    pr+=`<div class="fact"><span>Nejvyšší absence</span><b>${pc(peak)} % (${fmtS(peakD)})</b></div>`;
+    pr+=`<div class="fact"><span>Na konci ${sem.name}</span><b>${pc(F?Ae/F:0)} %</b></div>`;
+    if(last===null)pr+=`<div class="status s-ok" style="margin-top:8px">S tímhle plánem se nad ${st.limit} % nedostaneš.</div>`;
+    else if(back)pr+=`<div class="status s-warn" style="margin-top:8px">Pod limit se dostaneš ${fmt(back)}, pokud kromě plánu nevynecháš nic dalšího.</div>`;
+    else pr+=`<div class="status s-bad" style="margin-top:8px">S tímhle plánem skončíš ${sem.name} nad limitem.</div>`;
+  }
+  $('planRes').innerHTML=pr;
+
+  // free days
+  $('freeList').innerHTML=st.free.map((f,i)=>`<li><span>${fmt(D(f))}</span><button type="button" data-free="${i}">Odebrat</button></li>`).join('');
+
+  // weeks
+  let w='';const cm=monday(stav);
+  for(let m=BASE;m<=YEAR_END;m+=7*DAY){
+    let all=true;for(let k=0;k<5;k++){const t=m+k*DAY;if(t>=YEAR_START&&t<=YEAR_END&&!isOff(t)){all=false;break}}
+    const ty=weekType(m);
+    w+=`<button type="button" class="wk ${ty} ${all?'H':''} ${m===cm?'cur':''}" data-wk="${iso(m)}" aria-label="Týden od ${fmtS(m)}: ${ty==='P'?'praxe':'škola'}">${fmtS(m)} ${ty==='P'?'P':'Š'}</button>`;
+  }
+  $('weeks').innerHTML=w;
+}
+function dayWord(x){if(x===1)return 'den';if(x>=2&&x<=4)return 'dny';return 'dní'}
+function daysTxt(h){const d=Math.floor(h/7),r=h%7;const p=[];if(d)p.push(d+' '+dayWord(d));if(r)p.push(r+' h');return p.join(' a ')}
+
+function syncInputs(){
+  const stav=D(st.stav||todayIso),sk=semOf(stav);
+  subjSel.value=st.subj;$('stav').value=st.stav||todayIso;
+  $('missed').value=missedOf(sk,st.subj);
+  $('limit').value=st.limit;$('q1end').value=st.q1end;$('q3end').value=st.q3end;
+}
+function setMissed(v){const sk=semOf(D(st.stav||todayIso));st.missed[sk]=st.missed[sk]||{};st.missed[sk][st.subj]=Math.max(0,Math.round(v||0));}
+
+subjSel.addEventListener('change',()=>{st.subj=subjSel.value;save();syncInputs();render()});
+$('stav').addEventListener('change',e=>{st.stav=e.target.value===todayIso?'':e.target.value;save();syncInputs();render()});
+$('missed').addEventListener('input',e=>{setMissed(Number(e.target.value));save();render()});
+document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{setMissed(Number($('missed').value)+Number(b.dataset.step));save();syncInputs();render()}));
+$('limit').addEventListener('input',e=>{const v=Number(e.target.value);if(v>0&&v<=100){st.limit=v;save();render()}});
+$('q1end').addEventListener('change',e=>{if(e.target.value){st.q1end=e.target.value;save();render()}});
+$('q3end').addEventListener('change',e=>{if(e.target.value){st.q3end=e.target.value;save();render()}});
+$('addPlan').addEventListener('click',()=>{const f=$('pFrom').value,t=$('pTo').value;if(!f)return;let a=f,b=t||f;if(b<a)[a,b]=[b,a];st.plans.push({from:a,to:b});$('pFrom').value='';$('pTo').value='';save();render()});
+$('plans').addEventListener('click',e=>{const i=e.target.dataset.del;if(i!==undefined){st.plans.splice(Number(i),1);save();render()}});
+$('addFree').addEventListener('click',()=>{const f=$('freeDay').value;if(f&&!st.free.includes(f)){st.free.push(f);st.free.sort();$('freeDay').value='';save();render()}});
+$('freeList').addEventListener('click',e=>{const i=e.target.dataset.free;if(i!==undefined){st.free.splice(Number(i),1);save();render()}});
+$('weeks').addEventListener('click',e=>{const k=e.target.dataset.wk;if(!k)return;const cur=weekType(D(k));st.weeks[k]=cur==='P'?'S':'P';save();render()});
+$('resetWeeks').addEventListener('click',()=>{st.weeks={};save();render()});
+
+syncInputs();render();
+})();
+</script>
+</body>
+</html>
